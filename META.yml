@@ -13,6 +13,7 @@ build_requires:
 requires:
     Test::More:   0
     XML::Simple:  0
+    XML::Writer:  0
 no_index:
     directory:
         - t

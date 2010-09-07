@@ -34,9 +34,19 @@ our $VERSION = '0.09';
 
 =head1 SYNOPSIS
 
-CPL provides an object-oriented module for creating CPL files. 
+Video::CPL provides an object-oriented module for creating CPL files. CPL files control interactive video experiences.
 
-Create a file using CPL, and then embed a link to the file in your html as shown below.
+A simple example might be displaying a video, e.g. from Youtube, in a player on a webpage.
+
+A more complex example might include images, which the user clicks on to jump to other videos. 
+
+In conjunction with CGI.pm it is straightforward to create fully interactive web pages with dynamically created video experiences.
+
+Video::CPL does not create the video file itself; it works with videos on services such as Youtube, or created with tools such as Video::FFmpeg.
+
+A tutorial is available at http://metabase.coincident.tv/cpan.
+
+Short code sample: create a file using CPL, and then embed a link to the file in your html as shown below.
 
     use CPL;
     my $ctv = new Video::CPL(videoSource=>"http://www.youtube.com/watch?v=0ZexPPDLXRA"
