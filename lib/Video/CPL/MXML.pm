@@ -5,7 +5,7 @@ use strict;
 
 =head1 NAME
 
-Video::CPL::MXML - The great new Video::CPL::MXML!
+Video::CPL::MXML
 
 =head1 VERSION
 
@@ -18,14 +18,7 @@ our $VERSION = '0.09';
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
-
-Perhaps a little code snippet.
-
-    use Video::CPL::MXML;
-
-    my $foo = Video::CPL::MXML->new();
-    ...
+Holding object for MXML objects.
 
 =head1 SUBROUTINES/METHODS
 
@@ -104,6 +97,10 @@ sub xmlo {
     $xo->endTag("mxmlInCPL");
 }
 
+=head2 xml()
+
+=cut
+
 sub xml {
     my $obj = shift;
     my $a = "";
@@ -133,31 +130,7 @@ You can find documentation for this module with the perldoc command.
     perldoc Video::CPL::MXML
 
 
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Video-CPL>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Video-CPL>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Video-CPL>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Video-CPL/>
-
-=back
-
-
 =head1 ACKNOWLEDGEMENTS
-
 
 =head1 LICENSE AND COPYRIGHT
 

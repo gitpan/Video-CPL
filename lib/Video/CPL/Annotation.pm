@@ -24,13 +24,13 @@ our $VERSION = '0.09';
 
 =head1 SYNOPSIS
 
-    Video::CPL::Annotate exists to create and manipulate Annotations. CPL.pm is moving towards including more 
-and more helper functions; eventually this routine should be most useful for accessor functions, to modify
-or examine attributes. 
+    Video::CPL::Annotate exists to create and manipulate Annotations. 
 
     use Video::CPL::Annotation;
     my $foo = Video::CPL::Annotation->new(name=>"alpha-tech",clickBehavior=>"goto",x=>772,y=>66,
-         story=>new Video::CPL::Story(pic=>"foo.png"));
+                                          picLoc=>"foo.png");
+    #for a single use, this could also be created by helper functions, with an auto-generated name:
+    $cue->goto(x=>772,y=>66,picLoc=>"foo.png");
 
 =head1 METHODS
 
@@ -40,18 +40,79 @@ our @FIELDS = qw(name clickBehavior x y skipOnReturn showIcon story ajs alpha ta
 our @SIMPLEFIELDS = qw(name clickBehavior x y skipOnReturn showIcon ajs alpha);
 our %COMPLEX = (story=>1,targetList=>1,parent=>1);
 
-#accessors: creating these dynamically in BEGIN has complications. 
+=head2 name([$name])
+
+    Accessor routine to get or set the name.
+
+=cut
 sub name { my $obj = shift; $obj->{name} = shift if @_; return $obj->{name}; }
+
+=head2 clickBehavior(["decoration|goto|returnEnd|javascript"])
+
+    Accessor routine to get or set the clickBehavior. Other fields may need to be modified if this is changed.
+
+=cut
+    
 sub clickBehavior { my $obj = shift; $obj->{clickBehavior} = shift if @_; return $obj->{clickBehavior}; }
+
+=head2 x([$k])
+
+    Accessor routine to get or set the x value of the Annotation.
+
+=cut
+
 sub x { my $obj = shift; $obj->{x} = shift if @_; return $obj->{x}; }
+
+=head2 y([$k])
+
+    Accessor routine to get or set the y value of the Annotation.
+
+=cut 
+
 sub y { my $obj = shift; $obj->{y} = shift if @_; return $obj->{y}; }
+
+=head2 skipOnReturn(["true|false"])
+
+    Accessor routine to get or set skipOnReturn.
+
+=cut
+    
 sub skipOnReturn { my $obj = shift; $obj->{skipOnReturn} = shift if @_; return $obj->{skipOnReturn}; }
+
+=head2 showIcon(["true|false]")
+
+    Accessor routine to get or set showIcon.
+
+=cut
+
 sub showIcon { my $obj = shift; $obj->{showIcon} = shift if @_; return $obj->{showIcon}; }
+
+=head2 ajs($javascriptcode)
+
+    Accessor routine to get or set ajs, the javascript to be executed if clickBehavior is <b>javascript</b>.
+
+=cut
+
 sub ajs { my $obj = shift; $obj->{ajs} = shift if @_; return $obj->{ajs}; }
+
+=head2 story($story)
+
+    Accessor routine to get or set the <b>story</b>.
+
+=cut 
+
 sub story { my $obj = shift; $obj->{story} = shift if @_; return $obj->{story}; }
     #proposed
     #picLoc picOverLoc ballonText forever
     #if present will create and add story
+
+=head2 picLoc([$urlorlocalref])
+
+    Accessor routine to get or set the picLoc of an embedded <b>Story</b>. Will create the
+    <b>Story</b> object if it does not exist and a parameter is given.
+
+=cut 
+
 sub picLoc { my $obj = shift;
     if (@_){
        if ($obj->story()){
@@ -64,18 +125,42 @@ sub picLoc { my $obj = shift;
     }
     return $obj->story()->picLoc();
 }
+
+=head2 alpha([$value])
+
+    Accessor routine to get or set alpha.
+
+=cut
+
 sub alpha { my $obj = shift; $obj->{alpha} = shift if @_; return $obj->{alpha}; }
+
+=head2 targetList([$targetlist])
+
+    Accessor routine to get or set targetList.
+
+=cut
+
 sub targetList { my $obj = shift; $obj->{targetList} = shift if @_; return $obj->{targetList}; }
 #proposed: add 
    #target [accept array or scalar. Strings or cuePt. return array if wantarray else single target if only one else croak.]
    #backgroundPicLoc
    #operation 
    #headerText
+
+=head2 parent([$VideoCPLobject])
+
+    Accessor routine to get or set the parent. Video::CPL::Annotation uses this field to determine the parent
+    Video::CPL object.
+
+=cut
+
 sub parent { my $obj = shift; $obj->{parent} = shift if @_; return $obj->{parent}; }
 
-=head2 new(name=>"foo",click=>"goto",x=>23,y=>40)
+=head2 new([name=>$name,clickBehavior=>$something,x=>$k,y=>$k,skipOnReturn=>$tf,showIcon=>$tf,
+            story=>$story,ajs=>$javascript,alpha=>$value,targetList=>$targetList,target=>$cuepoint,parent=>$videocpl])
 
-    Creates a new Annotation object.
+    Creates a new Annotation object. Will automatically create a name if not given, and 
+    will convert a <b>Cue</b> passed as <b>target</b> to a <b>targetList</b>.
 
 =cut
 
@@ -111,7 +196,8 @@ sub new {
 }
 
 
-=head2 adjust(parm1=>val,parm2=>val,...)
+=head2 adjust([name=>$name,clickBehavior=>$what,skipOnReturn=>$tf,showIcon=>$tf,alpha=>$value,
+              skipOnReturn=>$tf,x=>$x,y=>$y,story=>$story])
 
     Change arbitrary fields within an Annotation point.
 
@@ -144,7 +230,7 @@ sub fromxml{
     return new Video::CPL::Annotation(%p);
 }
 
-=head2 xml()
+=head2 xmlo()
 
     Return the text form of the Annotation. Usually called by Video::CPL::xml().
 
@@ -164,6 +250,13 @@ sub xmlo {
     $xo->endTag("annotation");
 }
 
+=head2 xml()
+
+    Return the xml format of an Annotation object. Intended for special cases; normally the Video::CPL 
+    method <b>xml</b> is called to obtain XML for the entire Video::CPL object at once.
+
+=cut
+
 sub xml {
     my $obj = shift;
     my $a = "";
@@ -174,6 +267,8 @@ sub xml {
 }
 
 =head2 reffromobj($cplobj)
+
+    Returns the string used to refer to this Annotation from the Video::CPL object given.
 
 =cut
 

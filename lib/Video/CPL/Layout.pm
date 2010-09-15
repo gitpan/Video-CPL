@@ -21,12 +21,7 @@ our $VERSION = '0.09';
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
-
-Perhaps a little code snippet.
-
-    use Video::CPL::Layout;
-
+Create or manage CPL layouts.
 
 =head1 SUBROUTINES/METHODS
 
@@ -34,27 +29,149 @@ Perhaps a little code snippet.
 
 our @FIELDS = qw(videoHeight videoVCenter videoTop videoBottom videoWidth videoHCenter videoLeft videoRight webHeight webVCenter webTop webBottom webWidth webHCenter webLeft webRight name);
 
+=head2 videoHeight([$val])
+
+    Accessor method to get or set videoHeight.
+
+=cut
+
 sub videoHeight { my $obj = shift; $obj->{videoHeight} = shift if @_; return $obj->{videoHeight};};
+
+=head2 videoVCenter([$val])
+
+    Accessor method to get or set videoVCenter.
+
+=cut
+
 sub videoVCenter { my $obj = shift; $obj->{videoVCenter} = shift if @_; return $obj->{videoVCenter};};
+
+=head2 videoTop([$val])
+
+    Accessor method to get or set videoTop.
+
+=cut
+
 sub videoTop { my $obj = shift; $obj->{videoTop} = shift if @_; return $obj->{videoTop};};
+
+=head2 videoBottom([$val])
+
+    Accessor method to get or set videoBottom.
+
+=cut
+
 sub videoBottom { my $obj = shift; $obj->{videoBottom} = shift if @_; return $obj->{videoBottom};};
+
+=head2 videoWidth([$val])
+
+    Accessor method to get or set videoWidth.
+
+=cut
+
 sub videoWidth { my $obj = shift; $obj->{videoWidth} = shift if @_; return $obj->{videoWidth};};
+
+=head2 videoHCenter([$val])
+
+    Accessor method to get or set videoHCenter.
+
+=cut
+
 sub videoHCenter { my $obj = shift; $obj->{videoHCenter} = shift if @_; return $obj->{videoHCenter};};
+
+=head2 videoLeft([$val])
+
+    Accessor method to get or set videoLeft.
+
+=cut
+
 sub videoLeft { my $obj = shift; $obj->{videoLeft} = shift if @_; return $obj->{videoLeft};};
+
+=head2 videoRight([$val])
+
+    Accessor method to get or set videoRight.
+
+=cut
+
 sub videoRight { my $obj = shift; $obj->{videoRight} = shift if @_; return $obj->{videoRight};};
+
+=head2 webHeight([$val])
+
+    Accessor method to get or set webHeight.
+
+=cut
+
 sub webHeight { my $obj = shift; $obj->{webHeight} = shift if @_; return $obj->{webHeight};};
+
+=head2 webVCenter([$val])
+
+    Accessor method to get or set webVCenter.
+
+=cut
+
 sub webVCenter { my $obj = shift; $obj->{webVCenter} = shift if @_; return $obj->{webVCenter};};
+
+=head2 webTop([$val])
+
+    Accessor method to get or set webTop.
+
+=cut
+
 sub webTop { my $obj = shift; $obj->{webTop} = shift if @_; return $obj->{webTop};};
+
+=head2 webBottom([$val])
+
+    Accessor method to get or set webBottom.
+
+=cut
+
 sub webBottom { my $obj = shift; $obj->{webBottom} = shift if @_; return $obj->{webBottom};};
+
+=head2 webWidth([$val])
+
+    Accessor method to get or set webWidth.
+
+=cut
+
 sub webWidth { my $obj = shift; $obj->{webWidth} = shift if @_; return $obj->{webWidth};};
+
+=head2 webHCenter([$val])
+
+    Accessor method to get or set webHCenter.
+
+=cut
+
 sub webHCenter { my $obj = shift; $obj->{webHCenter} = shift if @_; return $obj->{webHCenter};};
+
+=head2 webLeft([$val])
+
+    Accessor method to get or set webLeft.
+
+=cut
+
 sub webLeft { my $obj = shift; $obj->{webLeft} = shift if @_; return $obj->{webLeft};};
+
+=head2 webRight([$val])
+
+    Accessor method to get or set webRight.
+
+=cut
+
 sub webRight { my $obj = shift; $obj->{webRight} = shift if @_; return $obj->{webRight};};
+
+=head2 name([$val])
+
+    Accessor method to get or set name.
+
+=cut
+
 sub name { my $obj = shift; $obj->{name} = shift if @_; return $obj->{name};};
 
-=head2 new()
+=head2 new([videoHeight=>$val,videoVCenter=>$val,videoTop=>$val,videoBottom=>$val,videoWidth=>$val,
+            videoHCenter=>$val,videoLeft=>$val,videoRight=>$val,webHeight=>$val,webVCenter=>$val,
+	    webTop=>$val,webBottom=>$val,webWidth=>$val,webHCenter=>$val,webLeft=>$val,webRight=>$val,
+	    name=>$val])
 
-    Create a new Layout object.
+    Create a new Layout object. A name must be specified and will not be auto-generated. Other objects
+    which refer to this Layout should use the name and not the object.
 
 =cut 
 
@@ -104,6 +221,10 @@ sub xml {
     $xo->end();
     return $a;
 }
+
+=head2 fromxml()
+
+=cut
 
 sub fromxml {
     my $s = shift;

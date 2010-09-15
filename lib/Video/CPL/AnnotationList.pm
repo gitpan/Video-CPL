@@ -31,9 +31,26 @@ our $VERSION = '0.09';
 
 our @FIELDS = qw(target);
 
-sub target { my $obj = shift; $obj->{target} = shift if @_; return $obj->{target};};
+=head2 target([@targetarray])
 
-=head2 new()
+    Accessor function to get or set the target array.
+
+=cut
+
+sub target { 
+    my $obj = shift; 
+    if (@_){
+        my @a = @_;
+	delete $obj->{target};
+        foreach my $x (@a){
+	    $obj->pusht($x);
+	}
+    }
+    return () if !exists($obj->{target});
+    return @{$obj->{target}};
+}
+
+=head2 new([target=>$targetarray])
 
     Create a new AnnotationList object.
 
@@ -54,6 +71,12 @@ sub new {
 
     return $ret;
 }
+
+=head2 pusht($target)
+
+    Push a target onto the target array.
+
+=cut
 
 sub pusht {
     my $obj = shift;
@@ -88,7 +111,8 @@ sub xmlo {
 
 =head2 xml()
 
-    Return the xml format of a AnnotationList object.
+    Return the xml format of a AnnotationList object. Intended for special cases; normally the Video::CPL 
+    method <b>xml</b> is called to obtain XML for the entire Video::CPL object at once.
 
 =cut
 

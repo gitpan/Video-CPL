@@ -23,13 +23,13 @@ our @FIELDS = qw(alpha balloonText forever picLoc picOverLoc);
     This is mostly an internal package for CPL.pm. You can use it directly, but it is recommended to use the cue point creation routines in CPL.pm.
 
     use Video::CPL::Story;
-    my $foo = Video::CPL::Story->new();
+    my $foo = Video::CPL::Story->new(balloonText=>"Hello");
 
 =head1 METHODS/METHODS
 
 =cut
 
-=head2 new(balloonText=>$string,forever=>"false",picLoc=$url,picOverLoc=>$url)
+=head2 new([alpha=>$value,balloonText=>$string,forever=>"false",picLoc=$url,picOverLoc=>$url])
 
     Create a new Video::CPL::Story object.
 

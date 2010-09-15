@@ -3,7 +3,6 @@ package Video::CPL;
 use warnings;
 use strict;
 use Carp;
-use Encode;
 use Data::Dumper;
 use Fcntl;
 use File::Temp;
@@ -59,27 +58,25 @@ Short code sample: create a file using CPL, and then embed a link to the file in
 
 =head1 METHODS
 
-=head2 new(videoSource=>$url,[html=>$htmldir,ref=>$url,] [PARMS]);
+=head2 new(videoSource=>$url,[backgroundHTML=>$url,frameHeight=>$k,
+           frameWidth=>$k,loggingService=>$url,skinButtons=>$url,
+	   videoHeight=>$k,videoViewLayout=>$name,videoWidth=>$k,
+	   videoX=>$k,videoY=>$k,webViewLayout=>$name,
+	   xUniqueID=$string,xVersionCPL=>$string,
+	   xWebServiceLog=>$string],[html=>$loc,ref=>$url],[htmldir=>$dir,htmlurl=>$url)
+       or
+       new(initfromctv=$urlORxml);
 
     Create a new Video::CPL object. There is one videoSource per Video::CPL object.
 
-    Attributes are named the same as in CPL.  E.g. to set xUniqueID add "xUniqueID=>23"
-
-    If the CPL for this object will be given in response to a CGI query, there may be no need for a file. Otherwise, in most simple cases, a CPL file will be written out to a local file which is can then be referred to with a URL.
-
-    To do this CPL needs to be told of a directory which can be seen via HTTP, i.e., one in the document tree of the web server. The directory on the local file system should be speficied either in the CPLDIR environment variable, or in the html parameter. The URL for this same directory should be specified in the CPLURL environment variable, or in the ref parameter. 
-
-    CPL can be used to build up a new CPL, or it can initialize itself with an existing CPL file.
-
-    If attributes are given which are not in the 0.7 or 0.8 spec, they will generate an error. 
-
-    Other parameters can include:
-
-    validator=>"CPL_v0.7_validator.xsd" . Sets the XML validator. Advanced users only.
-
-    xsi=>"http://www.w3.org/2001/XMLSchema-instance" . Set the schema instance. Advanced users only.
+    A videoSource such as videoSource=>"http://www.youtube.com/watch?v=0b75cl4-qRE", must be specified unless initializing from another Video::CPL file. All other parameters are optional; most of them are specified in the CPL language definition available from Coincident.tv. Additional file placement options are described below.
 
     initfromctv=>"foo.ctv" . Given a string which is either valid XML or a filename, use it to initialize the Video::CPL object.
+
+    If the Video::CPL object will be output using the <b>xml()</b> method, there is no need to specify a location for it. It is convenient to specify a location where the Video::CPL XML can be accessed, if multiple Video::CPL objects interact, or if the <b>embed</b> or <b>print</b> methods will be used. 
+
+    For automatic creation of a Video::CPL file, the location of a directory where the file can be created, along with the matching URL to reach that location, must be provided. An example would be <b>htmldir="/var/www/tmp"</b> and <b>htmlref=>"http://www.foo.com/tmp" </b>
+
 
 =cut
 
@@ -104,6 +101,13 @@ sub new {
     $ret->{'xmlns:xsi'} = $parms{'xmlns:xsi'} || "http://www.w3.org/2001/XMLSchema-instance";
 
     $ret->parsectv($parms{initfromctv}) if $parms{initfromctv};
+    warn("CPL new v1($parms{v1})\n");
+    $ret->v1($parms{v1}) if exists $parms{v1};
+    delete $parms{v1} if exists $parms{v1};
+    $ret->v2($parms{v2}) if exists $parms{v2};
+    delete $parms{v2} if exists $parms{v2};
+    $ret->v3($parms{v3}) if exists $parms{v3};
+    delete $parms{v3} if exists $parms{v3};
     #check parameters; confess on typos etc.
     foreach my $q (keys %parms){
 	next if $q =~ /xVersionCPL|videoSource|videoWidth|videoHeight|backgroundHTML|xWebServiceLoc|xUniqueID|xProgLevelDir|loggingService|html|ref|xsi:noNamespaceSchemaLocation|xmlns:xsi|xProgLevelData|skinButtons|webViewLayout|videoViewLayout|frameWidth|frameHeight|videoX|videoY|youtubeID|initfromctv/;
@@ -173,7 +177,7 @@ sub fixfile {
     return;
 }
 
-=head asurl()
+=head2 asurl()
 
     Returns the URL which will recreate this URL. This will be a file or a reference to this script.
 
@@ -194,7 +198,7 @@ sub asurl {
     }
 }
 
-=head asrel([$otherCPL])
+=head2 asrel([$otherCPL])
 
     Returns the URL fragment (e.g. foo/goo.ctv) which will access this file from the current directory. If given
     a parameter of another Video::CPL object, will return a URL fragment which is valid in that objects context.
@@ -263,7 +267,7 @@ sub xVersionCPL { my $obj = shift; $obj->{xVersionCPL} = shift if @_; return $ob
 
 =head2 videoSource([$url])
 
-    Accessor routine to set or read videoSource.
+    Accessor routine to set or read videoSource. 
 
 =cut
 
@@ -303,7 +307,7 @@ sub backgroundHTML { my $obj = shift; $obj->{backgroundHTML} = shift if @_; retu
 
 =head2 videoWidth([$string])
 
-    Accessor routine to set or read videoWidth.
+    Accessor routine to set or read videoWidth (the width of the video image within the overall CPL layout).
 
 =cut
 
@@ -311,7 +315,7 @@ sub videoWidth { my $obj = shift; $obj->{videoWidth} = shift if @_; return $obj-
 
 =head2 videoHeight([$string])
 
-    Accessor routine to set or read videoHeight.
+    Accessor routine to set or read videoHeight (the height of the video image).
 
 =cut
 
@@ -319,7 +323,7 @@ sub videoHeight { my $obj = shift; $obj->{videoHeight} = shift if @_; return $ob
 
 =head2 frameWidth([$string])
 
-    Accessor routine to set or read frameWidth.
+    Accessor routine to set or read frameWidth (the width of the entire CPL frame).
 
 =cut
 
@@ -327,7 +331,7 @@ sub frameWidth { my $obj = shift; $obj->{frameWidth} = shift if @_; return $obj-
 
 =head2 frameHeight([$string])
 
-    Accessor routine to set or read frameHeight.
+    Accessor routine to set or read frameHeight (the height of the entire CPL frame).
 
 =cut
 
@@ -402,6 +406,7 @@ sub video {
     my $obj = shift;
     if (@_){
         if ($obj->{video}){
+	    warn("Video called with ".join('/',@_).", video exists\n");
 	    my @a = @{$obj->{video}[0]{source}};
 	    my @new = @_;
 	    #who knows if the number of video fields will change in the future
@@ -410,24 +415,82 @@ sub video {
 		my %h = %{$a[$ia]};
 		$h{src} = $new[$ia];
 	    }
+	    warn("Video returning ".join('/',@new)."\n");
 	    return @new;
 	} else {
+	    warn("Video called with ".join('/',@_).", video does not exist\n");
 	    $obj->{video} = [{source => []}];
 	    foreach my $s (@_){
 	        push @{$obj->{video}[0]{source}},{src => $s};
 	    }
+	    warn("Video returning ".join('/',@_)."\n");
 	    return @_;
 	}
     } else {
-        return undef if !$obj->{video};
+        warn("Video not there, returning undefs\n") if !$obj->{video};
+        return (undef,undef,undef) if !$obj->{video};
 	my @a = @{$obj->{video}[0]{source}};
 	my @ret;
 	foreach my $ia (0..$#a){
 	    my %h = %{$a[$ia]};
 	    push @ret,$h{src};
 	}
+	warn("Video accessor returning ".join('/',@ret)."\n");
 	return @ret;
     }
+}
+
+=head2 v1($url)
+  
+    Accessor routine to get or set the first element of the video array.
+
+=cut
+
+sub v1 {
+    my $obj = shift;
+    if (@_){
+        my @a = $obj->video();
+	$a[0] = shift;
+	$obj->video(@a);
+    }
+    my @a = $obj->video();
+    warn("v1 returning ($a[0]) from ".join('/',@a)."\n");
+    return $a[0];
+}
+
+=head2 v2($url)
+  
+    Accessor routine to get or set the second element of the video array.
+
+=cut
+
+sub v2 {
+    my $obj = shift;
+    if (@_){
+        my @a = $obj->video();
+	$a[1] = shift;
+	warn("CPL v2 set a1 to $a[1]\n");
+	$obj->video(@a);
+    }
+    my @a = $obj->video();
+    return $a[1];
+}
+
+=head2 v3($url)
+  
+    Accessor routine to get or set the third element of the video array.
+
+=cut
+
+sub v3 {
+    my $obj = shift;
+    if (@_){
+        my @a = $obj->video();
+	$a[2] = shift;
+	$obj->video(@a);
+    }
+    my @a = $obj->video();
+    return $a[2];
 }
 
 =head2 tl($cuepointname)
@@ -618,8 +681,18 @@ sub converttarget {
 	     #confess if not scalar.
 	    $s = $q;
 	}
-	push @t,new Video::CPL::Target(cuePointRef=>$s);
+	my %targp = (cuePointRef=>$s);
+	if (defined $p{modal}){
+	    $targp{modal} = $p{modal};
+	}
+	if (defined $p{association}){ #hmm, works best for a single target
+	    $targp{association} = $p{association};
+	}
+	#push @t,new Video::CPL::Target(cuePointRef=>$s);
+	push @t,new Video::CPL::Target(%targp);
     }
+    delete $p{modal} if defined $p{modal};
+    delete $p{association} if defined $p{association};
     $p{targetList}->target(\@t);
     return %p;
 }
@@ -706,6 +779,16 @@ sub layout {
     return $ret;
 }
 
+=head2 layouts() return all layouts for the current Video::CPL as an array
+
+=cut
+
+sub layouts {
+    my $obj = shift;
+    return () if !exists($obj->{layouts});
+    return @{$obj->{layouts}};
+}
+
 =head2 layoutbyname($name)
 
     Return the layout with the given name.
@@ -752,6 +835,17 @@ sub numcue {
         return $obj->{cuePoints}[$num];
     }
     return undef;
+}
+
+=head2 cuePoints()
+
+    Returns all Cue objects.
+
+=cut
+
+sub cuePoints {
+    my $obj = shift;
+    return @{$obj->{cuePoints}};
 }
 
 =head2 numwebcue(4)
@@ -1071,7 +1165,7 @@ sub annotation {
 sub adecoration {
     my $obj = shift;
     my %parms = @_;
-    $parms{clickBehavior} = "javascript";
+    $parms{clickBehavior} = "decoration";
     $parms{parent} = $obj if !defined($parms{parent});
     my $anno = Video::CPL::Annotation->new(%parms);
     $obj->addanno($anno);
@@ -1103,7 +1197,7 @@ sub agoto {
     my %parms = @_;
     $parms{clickBehavior} = "goto";
     $parms{tl} = [$parms{dest}] if defined($parms{dest});
-    undef($parms{dest});
+    delete($parms{dest});
     $parms{parent} = $obj if !defined($parms{parent});
     my $anno = Video::CPL::Annotation->new(%parms);
     $obj->addanno($anno);

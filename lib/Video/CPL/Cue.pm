@@ -36,33 +36,214 @@ our @FIELDS = qw(name cueType time tags interestURL query zeroLen cannotSkip pau
 #WARNING be careful accessing time. $x->{time} will give the wrong results. time() can't be called
 #directly in the module. foo(time=>1) and $x->time() work given Perl rules.
 #
+=head2 name([$name])
+
+    Accessor function to get or set name.
+
+=cut
+
 sub name { my $obj = shift; $obj->{'name'} = shift if @_; return $obj->{'name'}; }
+
+=head2 cueType([$type])
+
+    Accessor function to get or set cueType.
+
+=cut
+
 sub cueType { my $obj = shift; $obj->{'cueType'} = shift if @_; return $obj->{'cueType'}; }
+
+=head2 time([$time])
+
+    Accessor function to get or set time.
+
+=cut
+
 sub time { my $obj = shift; $obj->{'time'} = shift if @_; return $obj->{'time'}; }
+
+=head2 tags([$tags])
+
+    Accessor function to get or set tags.
+
+=cut
+
 sub tags { my $obj = shift; $obj->{tags} = shift if @_; return $obj->{tags}; }
+
+=head2 interestURL([$url])
+
+    Accessor function to get or set interestURL.
+
+=cut
+
 sub interestURL { my $obj = shift; $obj->{interestURL} = shift if @_; return $obj->{interestURL}; }
+
+=head2 query([$query])
+
+    Accessor function to get or set query.
+
+=cut
+
 sub query { my $obj = shift; $obj->{query} = shift if @_; return $obj->{query}; }
+
+=head2 zeroLen([$tf])
+
+    Accessor function to get or set zeroLen.
+
+=cut
+
 sub zeroLen { my $obj = shift; $obj->{zeroLen} = shift if @_; return $obj->{zeroLen}; }
+
+=head2 cannotSkip([$tf])
+
+    Accessor function to get or set cannotSkip.
+
+=cut
+
 sub cannotSkip { my $obj = shift; $obj->{cannotSkip} = shift if @_; return $obj->{cannotSkip}; }
+
+=head2 pauseOnEntry([$tf])
+
+    Accessor function to get or set pauseOnEntry.
+
+=cut
+
 sub pauseOnEntry { my $obj = shift; $obj->{pauseOnEntry} = shift if @_; return $obj->{pauseOnEntry}; }
+
+=head2 modalOnEntry([$tf])
+
+    Accessor function to get or set modalOnEntry.
+
+=cut
+
 sub modalOnEntry { my $obj = shift; $obj->{modalOnEntry} = shift if @_; return $obj->{modalOnEntry}; }
+
+=head2 soft([$tf])
+
+    Accessor function to get or set soft.
+
+=cut
+
 sub soft { my $obj = shift; $obj->{soft} = shift if @_; return $obj->{soft}; }
+
+=head2 js([$javascript])
+
+    Accessor function to get or set js, the Javascript to be used when this cuePoint is reached.
+
+=cut
+
 sub js { my $obj = shift; $obj->{js} = shift if @_; return $obj->{js}; }
+
+=head2 backgroundHTML([$url])
+
+    Accessor function to get or set backgroundHTML.
+
+=cut
+
 sub backgroundHTML { my $obj = shift; $obj->{backgroundHTML} = shift if @_; return $obj->{backgroundHTML}; }
+
+=head2 coincidentWebPoint([$value])
+
+    Accessor function to get or set coincidentWebPoint
+
+=cut
+
 sub coincidentWebPoint { my $obj = shift; $obj->{coincidentWebPoint} = shift if @_; return $obj->{coincidentWebPoint}; }
+
+=head2 pauseOnDisplay([$tf])
+
+    Accessor function to get or set pauseOnDisplay.
+
+=cut
+
 sub pauseOnDisplay { my $obj = shift; $obj->{pauseOnDisplay} = shift if @_; return $obj->{pauseOnDisplay}; }
+
+=head2 mxmlInCPL([$mxmlcode])
+
+    Accessor function to get or set mxmlInCPL.
+
+=cut
+
 sub mxmlInCPL { my $obj = shift; $obj->{mxmlInCPL} = shift if @_; return $obj->{mxmlInCPL}; }
+
+=head2 videoBottom([$value])
+
+    Accessor function to get or set videoBottom.
+
+=cut
+
 sub videoBottom { my $obj = shift; $obj->{videoBottom} = shift if @_; return $obj->{videoBottom}; }
+
+=head2 useLayout([$layoutname])
+
+    Accessor function to get or set useLayout.
+
+=cut
+
 sub useLayout { my $obj = shift; $obj->{useLayout} = shift if @_; return $obj->{useLayout}; }
+
+=head2 webViewLayout([$webViewLayout])
+
+    Accessor function to get or set webViewLayout.
+
+=cut
+
 sub webViewLayout { my $obj = shift; $obj->{webViewLayout} = shift if @_; return $obj->{webViewLayout}; }
+
+=head2 videoHCenter([$value])
+
+    Accessor function to get or set videoHCenter.
+
+=cut
+
 sub videoHCenter { my $obj = shift; $obj->{videoHCenter} = shift if @_; return $obj->{videoHCenter}; }
+
+=head2 webBottom([$value])
+
+    Accessor function to get or set webBottom.
+
+=cut
+
 sub webBottom { my $obj = shift; $obj->{webBottom} = shift if @_; return $obj->{webBottom}; }
 
+=head2 annotationList([$annotationlist])
+
+    Accessor function to get or set annotationList.
+
+=cut
+
 sub annotationList { my $obj = shift; $obj->{annotationList} = shift if @_; return $obj->{annotationList}; }
+
+=head2 directoryList([$directorylist])
+
+    Accessor function to get or set directoryList.
+
+=cut
+
 sub directoryList { my $obj = shift; $obj->{directoryList} = shift if @_; return $obj->{directoryList}; }
+
+=head2 targetList([$targetList])
+
+    Accessor function to get or set targetList.
+
+=cut
+
 sub targetList { my $obj = shift; $obj->{targetList} = shift if @_; return $obj->{targetList}; }
+
+=head2 story([$story])
+
+    Accessor function to get or set story.
+
+=cut
+
 sub story { my $obj = shift; $obj->{story} = shift if @_; return $obj->{story}; }
 #not an attribute
+
+=head2 parent([$videoCPLobject])
+
+    Accessor function to get or set parent. Video::CPL::Cue tracks the parent Video::CPL object, so as to be
+    able to generate an appropriate reference for external CPL files.
+
+=cut
+
 sub parent { my $obj = shift; $obj->{parent} = shift if @_; return $obj->{parent}; }
 
     #cue new is normally called from CPL.pm. Newest model is that it sets story and TargetList correctly
@@ -75,9 +256,25 @@ sub parent { my $obj = shift; $obj->{parent} = shift if @_; return $obj->{parent
    #operation 
    #headerText
 
-=head2 new();
+=head2 new([name=>$name,cueType=>$type,time=>$val,tags=>$string,interestURL=>$url,query=>string,
+            zeroLen=>$tf,cannotSkip=>$tf,pauseOnEntry=>$tf,modalOnEntry=>$tf,soft=>$tf,js=>$javascript,
+	    backgroundHTML=>$url,coincidentWebPoint=>$val,pauseOnDisplay=>$tf,canBeDestination=>$tf,
+	    mxmlInCPL=>$mxml,videoBottom=>$value,useLayout=>$layout,webViewLayout=>$layout,
+	    videoHCenter=>$value,webBottom=>$value]);
 
-    Return a new Cue object. 
+    Return a new Cue object, with the parameters set as specified. An advantage of using the
+    CPL::Video helper functions instead is that parent will be automatically set. Rather than:
+
+    $cue = new Video::CPL::Cue(name=>"foo",time=>3,cueType=>regular);
+    $cpl->addcue($cue);
+
+    use:
+
+    $cpl->regular(time=>3,name=>"foo");
+
+    Names will be automatically created if not specified, so an even shorter version would be:
+
+    $cpl->regular(time=>3);
 
 =cut
 
@@ -96,7 +293,11 @@ sub new {
     return $ret;
 }
 
-=head2 adjust(parm1=>val,parm2=>val,...)
+=head2 adjust([name=>$name,cueType=>$type,time=>$val,tags=>$string,interestURL=>$url,query=>string,
+            zeroLen=>$tf,cannotSkip=>$tf,pauseOnEntry=>$tf,modalOnEntry=>$tf,soft=>$tf,js=>$javascript,
+	    backgroundHTML=>$url,coincidentWebPoint=>$val,pauseOnDisplay=>$tf,canBeDestination=>$tf,
+	    mxmlInCPL=>$mxml,videoBottom=>$value,useLayout=>$layout,webViewLayout=>$layout,
+	    videoHCenter=>$value,webBottom=>$value]);
 
     Change arbitrary fields within a Cue point.
 
@@ -110,7 +311,7 @@ sub adjust {
     foreach my $q (@FIELDS,'story','annotationList','targetList'){
 	$obj->{$q} = $parms{$q} if defined($parms{$q});
     }
-    $obj->{parent} = $parms{parent} || undef;
+    $obj->{parent} = $parms{parent} if exists $parms{parent};
     $obj->{zerolen} = $parms{zerolen} || ($parms{cueType} =~ /(goto|regularEnd|returnEnd)/)?"true":"false";
     return $obj;
 }
@@ -152,9 +353,11 @@ sub setdl {
 sub addanno {
     my $obj = shift;
     my @annos = @_;
+    my @ret;
     foreach my $x (@annos){
 	confess("Video::CPL::Cue::addanno needs a Video::CPL::Annotation\n") if ref($x) ne "Video::CPL::Annotation";
 	my $t = new Video::CPL::Target(cuePointRef=>$x->name());
+	push @ret,$t;
 	if (defined $obj->{annotationList}){
 	    $obj->annotationList()->pusht($t);
 	} else {
@@ -162,6 +365,7 @@ sub addanno {
 	}
 	push @{$obj->{annotations}},$t;
     }
+    return @ret;
 }
 
 =head2 annotations()
@@ -306,7 +510,7 @@ sub goto {
 
 =head2 decoration(%parms)
 
-    Add a new clickBehavior=decoration annotation to this Video::CPL::Cue. Parameters are the same as for CPL::Annotation::new except that clickBehavior=decoration is implied.
+    Add a new clickBehavior=decoration annotation to the parent of this Video::CPL::Cue, and add a cuePointRef to it from this object. Parameters are the same as for CPL::Annotation::new except that clickBehavior=decoration is implied. An 
 
 =cut
 

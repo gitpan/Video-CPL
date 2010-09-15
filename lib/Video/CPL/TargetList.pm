@@ -10,7 +10,7 @@ use Data::Dumper;
 
 =head1 NAME
 
-Video::CPL::TargetList - The great new Video::CPL::TargetList!
+Video::CPL::TargetList
 
 =head1 VERSION
 
@@ -18,24 +18,11 @@ Version 0.08
 
 =cut
 
-our $VERSION = '0.08';
-
+our $VERSION = '0.09';
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
-
-Perhaps a little code snippet.
-
-    use Video::CPL::TargetList;
-
-    my $foo = Video::CPL::TargetList->new();
-    ...
-
-=head1 EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+Create and modify TargetList objects. Usually invoked from within Video::CPL.
 
 =head1 SUBROUTINES/METHODS
 
@@ -43,13 +30,39 @@ if you don't export anything, such as for a purely object-oriented module.
 
 our @FIELDS = qw(backgroundPicLoc headerText operation target);
 
-#dynamic INIT-block creation of these routines has too many problems. spell it out.
+=head2 backgroundPicLoc([$url])
+
+    Accessor method to get or set backgroundPicLoc.
+
+=cut
+
 sub backgroundPicLoc { my $obj = shift; $obj->{backgroundPicLoc} = shift if @_; return $obj->{backgroundPicLoc};};
+
+=head2 headerText([$text])
+
+    Accessor method to get or set headerText.
+
+=cut
+
 sub headerText { my $obj = shift; $obj->{headerText} = shift if @_; return $obj->{headerText};};
+
+=head2 operation([$operation])
+
+    Accessor method to get or set operation.
+
+=cut
+
 sub operation { my $obj = shift; $obj->{operation} = shift if @_; return $obj->{operation};};
+
+=head2 target([$target])
+
+    Accessor method to get or set target.
+
+=cut
+
 sub target { my $obj = shift; $obj->{target} = shift if @_; return $obj->{target};};
 
-=head2 new()
+=head2 new([backgroundPicLoc=>$url,headerText=>$text,operation=>$op,target=>$target])
 
     Create a new TargetList object.
 
@@ -108,6 +121,10 @@ sub xml {
     return $a;
 }
 
+=head2 fromxml()
+
+=cut
+
 sub fromxml {
     my $s = shift;
     my %s = %{$s};
@@ -137,10 +154,21 @@ Please report any bugs or feature requests to Coincident TV.
 
 You can find documentation for this module with the perldoc command.
 
-
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2010 Coincident TV, Inc.
+Copyright 2010 Coincident TV
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 =cut
 

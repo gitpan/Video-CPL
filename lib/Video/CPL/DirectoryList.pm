@@ -5,7 +5,7 @@ use strict;
 
 =head1 NAME
 
-Video::CPL::DirectoryList - The great new Video::CPL::DirectoryList!
+Video::CPL::DirectoryList - 
 
 =head1 VERSION
 
@@ -18,34 +18,16 @@ our $VERSION = '0.09';
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
-
-Perhaps a little code snippet.
-
-    use Video::CPL::DirectoryList;
-
-    my $foo = Video::CPL::DirectoryList->new();
-    ...
-
-=head1 EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+Create and modify DirectoryList objects.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 function1
+=head2 new() #NYI
 
 =cut
 
-sub function1 {
-}
-
-=head2 function2
-
-=cut
-
-sub function2 {
+sub new {
+    die "Video::CPL::DirectoryList NYI";
 }
 
 =head1 AUTHOR

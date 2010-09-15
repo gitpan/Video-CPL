@@ -8,7 +8,7 @@ use XML::Writer;
 
 =head1 NAME
 
-Video::CPL::Target - The great new Video::CPL::Target!
+Video::CPL::Target - Create and modify Target objects.
 
 =head1 VERSION
 
@@ -21,19 +21,7 @@ our $VERSION = '0.09';
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
-
-Perhaps a little code snippet.
-
-    use Video::CPL::Target;
-
-    my $foo = Video::CPL::Target->new();
-    ...
-
-=head1 EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+Create and modify Target objects. These can also be created by helper functions at a higher level.
 
 =head1 SUBROUTINES/METHODS
 
@@ -43,12 +31,31 @@ our @FIELDS = qw(cuePointRef association modal);
 
 #cuePointRef : new model is that this is a string
 
-#dynamic INIT-block creation of these routines has too many problems. spell it out.
+=head2 cuePointRef([$string])
+
+    Accessor method to get or set cuePointRef.
+
+=cut
+
 sub cuePointRef { my $obj = shift; $obj->{cuePointRef} = shift if @_; return $obj->{cuePointRef};};
+
+=head2 association([$string])
+
+    Accessor method to get or set association.
+
+=cut
+
 sub association { my $obj = shift; $obj->{association} = shift if @_; return $obj->{association};};
+
+=head2 modal([$tf])
+
+    Accessor method to get or set modal.
+
+=cut
+
 sub modal { my $obj = shift; $obj->{modal} = shift if @_; return $obj->{modal};};
 
-=head2 new()
+=head2 new([cuePointRef=>$cpr,association=>$assoc,modal=>$tf])
 
     Create a new Target object.
 
@@ -98,6 +105,10 @@ sub xml {
     $xo->end();
     return $a;
 }
+
+=head2 fromxml()
+
+=cut
 
 sub fromxml {
     my $s = shift;
