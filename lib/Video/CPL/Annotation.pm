@@ -16,11 +16,11 @@ Video::CPL::Annotation - Video::CPL::Annotation object.
 
 =head1 VERSION
 
-Version 0.09
+Version 0.10
 
 =cut
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 =head1 SYNOPSIS
 
@@ -126,6 +126,25 @@ sub picLoc { my $obj = shift;
     return $obj->story()->picLoc();
 }
 
+=head2 picOverLoc([$urlorlocalref])
+
+    Accessor routine to get or set the picOverLoc of an embedded <b>Story</b>. Will create the
+    <b>Story</b> object if it does not exist and a parameter is given.
+
+=cut 
+
+sub picOverLoc { my $obj = shift;
+    if (@_){
+       if ($obj->story()){
+           $obj->story()->picOverLoc(@_);
+       } else {
+           $obj->{story} = new Video::CPL::Story(picOverLoc=>@_);
+       }
+    } else {
+        return undef if !$obj->story();
+    }
+    return $obj->story()->picOverLoc();
+}
 =head2 alpha([$value])
 
     Accessor routine to get or set alpha.

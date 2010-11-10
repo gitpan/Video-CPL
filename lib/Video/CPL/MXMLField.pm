@@ -11,11 +11,11 @@ Video::CPL::MXMLField - Video::CPL::MXMLField object.
 
 =head1 VERSION
 
-Version 0.09
+Version 0.10
 
 =cut
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 my @FIELDS = qw(click color data dataProfider editable fontSize fontWidth height horizontalCenter horizontalScrollPolicy id item label leading scaleContent source source text verticalCenter verticalScrollPolicy width x y);
 my @KINDS = qw(mx:CheckBox mx:ComboBox mx:RadioButton mx:Button mx:Image mx:Label mx:TextInput mx:Text);
 

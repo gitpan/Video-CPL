@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Video-CPL
-version:            0.09
+version:            0.10
 abstract:           Create and manipulate Coincident TV Programming Language (CPL) files.
 author:
     - Carl Rosenberg <carl@coincident.tv>
